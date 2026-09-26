@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Incident - SentinelDesk</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <header>
+        <h1>SentinelDesk</h1>
+        <p>Cybersecurity Incident Management System</p>
+    </header>
+
+    <main>
+        <h2>Report Security Incident</h2>
+
+        <form action="/incidents" method="POST">
+
+            <label for="type">Incident Type</label>
+            <input
+                type="text"
+                id="type"
+                name="type"
+                placeholder="e.g. Malware Attack"
+                required
+            >
+
+            <label for="severity">Severity</label>
+            <select id="severity" name="severity" required>
+                <option value="">Select severity</option>
+                <option value="LOW">Low</option>
+                <option value="MEDIUM">Medium</option>
+                <option value="HIGH">High</option>
+                <option value="CRITICAL">Critical</option>
+            </select>
+
+            <label for="sourceIP">Source IP</label>
+            <input
+                type="text"
+                id="sourceIP"
+                name="sourceIP"
+                placeholder="e.g. 192.168.1.50"
+                required
+            >
+
+            <label for="description">Description</label>
+            <textarea
+                id="description"
+                name="description"
+                placeholder="Describe the security incident"
+                required
+            ></textarea>
+
+            <button type="submit">Report Incident</button>
+
+        </form>
+
+        <a href="/">← Back to Dashboard</a>
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SentinelDesk</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>SentinelDesk</h1>
+        <p>Cybersecurity Incident Management System</p>
+    </header>
+
+    <main>
+        <div class="stats-grid">
+
+            <div class="stat-card">
+                <h3>Total Incidents</h3>
+                <p><%= stats.total %></p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Open</h3>
+                <p><%= stats.open %></p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Investigating</h3>
+                <p><%= stats.investigating %></p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Resolved</h3>
+                <p><%= stats.resolved %></p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Critical</h3>
+                <p><%= stats.critical %></p>
+            </div>
+
+        </div>
+
+        <div class="dashboard-header">
+            <h2>Security Incidents</h2>
+            <a href="/incidents/new" class="button">+ Report Incident</a>
+        </div>
+
+        <form action="/" method="GET" class="filter-form">
+
+            <input
+                type="text"
+                name="search"
+                placeholder="Search incidents..."
+                value="<%= filters.search %>"
+            >
+
+            <select name="severity">
+                <option value="">All Severities</option>
+                <option value="LOW" <%= filters.severity === "LOW" ? "selected" : "" %>>
+                    Low
+                </option>
+                <option value="MEDIUM" <%= filters.severity === "MEDIUM" ? "selected" : "" %>>
+                    Medium
+                </option>
+                <option value="HIGH" <%= filters.severity === "HIGH" ? "selected" : "" %>>
+                    High
+                </option>
+                <option value="CRITICAL" <%= filters.severity === "CRITICAL" ? "selected" : "" %>>
+                    Critical
+                </option>
+            </select>
+
+            <select name="status">
+                <option value="">All Statuses</option>
+                <option value="OPEN" <%= filters.status === "OPEN" ? "selected" : "" %>>
+                    Open
+                </option>
+                <option value="INVESTIGATING" <%= filters.status === "INVESTIGATING" ? "selected" : "" %>>
+                    Investigating
+                </option>
+                <option value="RESOLVED" <%= filters.status === "RESOLVED" ? "selected" : "" %>>
+                    Resolved
+                </option>
+            </select>
+
+            <button type="submit" class="button">Filter</button>
+
+            <a href="/" class="clear-filter">Clear</a>
+
+        </form>
+
+        <div class="incident-list">
+
+            <% incidents.forEach(incident => { %>
+
+                <div class="incident-card">
+
+                    <h3>
+                        #<%= incident.id %>
+                        <%= incident.type %>
+                    </h3>
+
+                    <p>
+                        <strong>Severity:</strong>
+                        <%= incident.severity %>
+                    </p>
+
+                    <p>
+                        <strong>Source IP:</strong>
+                        <%= incident.sourceIP %>
+                    </p>
+
+                    <p>
+                        <strong>Description:</strong>
+                        <%= incident.description %>
+                    </p>
+
+                    <p>
+                        <strong>Status:</strong>
+                        <%= incident.status %>
+                    </p>
+
+                    <form action="/incidents/<%= incident.id %>/status" method="POST">
+
+                        <label for="status-<%= incident.id %>">
+                            Update Status:
+                        </label>
+
+                        <select
+                            id="status-<%= incident.id %>"
+                            name="status"
+                        >
+                            <option value="OPEN" <%= incident.status === "OPEN" ? "selected" : "" %>>
+                                Open
+                            </option>
+
+                            <option value="INVESTIGATING" <%= incident.status === "INVESTIGATING" ? "selected" : "" %>>
+                                Investigating
+                            </option>
+
+                            <option value="RESOLVED" <%= incident.status === "RESOLVED" ? "selected" : "" %>>
+                                Resolved
+                            </option>
+                        </select>
+
+                        <button type="submit">Update</button>
+
+                    </form>
+                </div>
+
+            <% }); %>
+
+        </div>
+
+    </main>
+    <footer>
+        Running commit:
+        <code><%= commitId %></code>
+    </footer>
+</body>
+</html>
