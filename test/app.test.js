@@ -8,7 +8,7 @@ test("GET /health should return status ok", async () => {
     const response = await request(app)
         .get("/health");
 
-    assert.strictEqual(response.statusCode, 500);
+    assert.strictEqual(response.statusCode, 200);
     assert.deepStrictEqual(response.body, {
         status: "ok"
     });
