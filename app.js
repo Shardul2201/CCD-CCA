@@ -97,8 +97,12 @@ app.post("/incidents", (req, res) => {
 
     const validSeverities = ["LOW", "MEDIUM", "HIGH", "CRITICAL"];
 
-    // Validate required fields
-    if (!type || !severity || !sourceIP || !description) {
+    if (
+        !type?.trim() ||
+        !severity?.trim() ||
+        !sourceIP?.trim() ||
+        !description?.trim()
+    ) {
         return res.status(400).send("All fields are required.");
     }
 

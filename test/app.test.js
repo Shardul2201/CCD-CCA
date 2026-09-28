@@ -78,3 +78,16 @@ test("POST /incidents/:id/status should return 404 for missing incident", async 
     assert.strictEqual(response.statusCode, 404);
     assert.strictEqual(response.text, "Incident not found.");
 });
+test("POST /incidents should reject empty text fields", async () => {
+    const response = await request(app)
+        .post("/incidents")
+        .send({
+            type: "   ",
+            severity: "HIGH",
+            sourceIP: "192.168.1.50",
+            description: "   "
+        });
+
+    assert.strictEqual(response.statusCode, 400);
+    assert.strictEqual(response.text, "All fields are required.");
+});
