@@ -41,15 +41,15 @@ const incidents = [
 
 // Home page
 app.get("/", (req, res) => {
-    const search = req.query.search || "";
-    const severity = req.query.severity || "";
-    const status = req.query.status || "";
+    const search = (req.query.search || "").trim().toLowerCase();
+    const severity = (req.query.severity || "").trim().toUpperCase();
+    const status = (req.query.status || "").trim().toUpperCase();
 
     const filteredIncidents = incidents.filter(incident => {
         const matchesSearch =
-            incident.type.toLowerCase().includes(search.toLowerCase()) ||
+            incident.type.toLowerCase().includes(search) ||
             incident.sourceIP.includes(search) ||
-            incident.description.toLowerCase().includes(search.toLowerCase());
+            incident.description.toLowerCase().includes(search);
 
         const matchesSeverity =
             !severity || incident.severity === severity;
