@@ -108,7 +108,10 @@
 
                     <p>
                         <strong>Severity:</strong>
-                        <%= incident.severity %>
+
+                        <span class="badge severity-<%= incident.severity.toLowerCase() %>">
+                            <%= incident.severity %>
+                        </span>
                     </p>
 
                     <p>
@@ -123,7 +126,10 @@
 
                     <p>
                         <strong>Status:</strong>
-                        <%= incident.status %>
+
+                        <span class="badge status-<%= incident.status.toLowerCase() %>">
+                            <%= incident.status %>
+                        </span>
                     </p>
 
                     <form action="/incidents/<%= incident.id %>/status" method="POST">
@@ -159,9 +165,11 @@
         </div>
 
     </main>
+
     <footer>
         Running commit:
         <code><%= commitId %></code>
     </footer>
+
 </body>
 </html>
