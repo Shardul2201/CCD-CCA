@@ -40,6 +40,11 @@ jobs:
       - name: Run Docker container
         run: docker run -d --name sentineldesk-ci -p 3000:3000 sentineldesk:ci
 
+      - name: Inspect Docker container
+        run: |
+          docker ps -a
+          docker logs sentineldesk-ci
+
       - name: Smoke test health endpoint
         run: |
           trap 'docker rm -f sentineldesk-ci' EXIT
