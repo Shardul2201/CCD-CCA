@@ -39,15 +39,9 @@ jobs:
 
       - name: Run Docker container
         run: docker run -d --name sentineldesk-ci -p 3000:3000 sentineldesk:ci
-
-      - name: Inspect Docker container
-        run: |
-          sleep 2
-          docker ps -a
-          echo "=== Container logs ==="
-          docker logs sentineldesk-ci
-          echo "=== Health check from inside container ==="
-          docker exec sentineldesk-ci wget -qO- http://127.0.0.1:3000/health
+        
+      - name: Wait for Docker container
+        run: sleep 2
 
       - name: Smoke test health endpoint
         run: |
