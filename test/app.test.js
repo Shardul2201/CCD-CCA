@@ -13,6 +13,7 @@ test("GET /health should return status ok", async () => {
         status: "ok"
     });
 });
+
 test("POST /incidents should create a new incident", async () => {
     const response = await request(app)
         .post("/incidents")
@@ -26,6 +27,7 @@ test("POST /incidents should create a new incident", async () => {
     assert.strictEqual(response.statusCode, 302);
     assert.strictEqual(response.headers.location, "/");
 });
+
 test("POST /incidents should reject invalid input", async () => {
     const response = await request(app)
         .post("/incidents")
@@ -39,6 +41,7 @@ test("POST /incidents should reject invalid input", async () => {
     assert.strictEqual(response.statusCode, 400);
     assert.strictEqual(response.text, "Invalid IPv4 address.");
 });
+
 test("POST /incidents/:id/status should update incident status", async () => {
     const response = await request(app)
         .post("/incidents/1001/status")
@@ -49,6 +52,7 @@ test("POST /incidents/:id/status should update incident status", async () => {
     assert.strictEqual(response.statusCode, 302);
     assert.strictEqual(response.headers.location, "/");
 });
+
 test("GET /api/incidents should return incident data", async () => {
     const response = await request(app)
         .get("/api/incidents");
@@ -57,6 +61,7 @@ test("GET /api/incidents should return incident data", async () => {
     assert.ok(Array.isArray(response.body));
     assert.ok(response.body.length > 0);
 });
+
 test("POST /incidents/:id/status should reject invalid status", async () => {
     const response = await request(app)
         .post("/incidents/1001/status")
@@ -78,6 +83,7 @@ test("POST /incidents/:id/status should return 404 for missing incident", async 
     assert.strictEqual(response.statusCode, 404);
     assert.strictEqual(response.text, "Incident not found.");
 });
+
 test("POST /incidents should reject empty text fields", async () => {
     const response = await request(app)
         .post("/incidents")
@@ -90,4 +96,27 @@ test("POST /incidents should reject empty text fields", async () => {
 
     assert.strictEqual(response.statusCode, 400);
     assert.strictEqual(response.text, "All fields are required.");
+});
+
+test("GET / should support case-insensitive incident search", async () => {
+    const response = await request(app)
+        .get("/")
+        .query({
+            search: "BRUTE FORCE"
+        });
+
+    assert.strictEqual(response.statusCode, 200);
+    assert.match(response.text, /Brute Force Attack/);
+});
+
+test("GET / should filter incidents by severity and status", async () => {
+    const response = await request(app)
+        .get("/")
+        .query({
+            severity: "HIGH",
+            status: "RESOLVED"
+        });
+
+    assert.strictEqual(response.statusCode, 200);
+    assert.match(response.text, /Phishing Attempt/);
 });
