@@ -57,3 +57,24 @@ test("GET /api/incidents should return incident data", async () => {
     assert.ok(Array.isArray(response.body));
     assert.ok(response.body.length > 0);
 });
+test("POST /incidents/:id/status should reject invalid status", async () => {
+    const response = await request(app)
+        .post("/incidents/1001/status")
+        .send({
+            status: "INVALID"
+        });
+
+    assert.strictEqual(response.statusCode, 400);
+    assert.strictEqual(response.text, "Invalid status.");
+});
+
+test("POST /incidents/:id/status should return 404 for missing incident", async () => {
+    const response = await request(app)
+        .post("/incidents/9999/status")
+        .send({
+            status: "RESOLVED"
+        });
+
+    assert.strictEqual(response.statusCode, 404);
+    assert.strictEqual(response.text, "Incident not found.");
+});
