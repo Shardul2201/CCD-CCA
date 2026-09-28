@@ -33,3 +33,14 @@ jobs:
 
       - name: Run tests
         run: npm test
+
+      - name: Build Docker image
+        run: docker build -t sentineldesk:ci .
+
+      - name: Run Docker container
+        run: docker run -d --name sentineldesk-ci -p 3000:3000 sentineldesk:ci
+
+      - name: Smoke test health endpoint
+        run: |
+          trap 'docker rm -f sentineldesk-ci' EXIT
+          curl --fail --retry 10 --retry-delay 2 http://localhost:3000/health
